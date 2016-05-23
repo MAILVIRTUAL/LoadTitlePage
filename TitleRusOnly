@@ -1,0 +1,57 @@
+#!/usr/bin/python
+# -*- coding: utf-8
+
+import urllib
+import string
+import MySQLdb
+import sys
+import datetime
+for param in sys.argv:
+    print (param)
+
+from grab import Grab
+from lxml.html import tostring
+db = MySQLdb.connect(host="localhost", user="izofen", passwd="podkjf4", db="rusnet",charset='cp1251')
+db.set_character_set('utf8')
+cursor = db.cursor()
+
+dbUp = MySQLdb.connect(host="localhost", user="izofen", passwd="podkjf4", db="rusnet",charset='cp1251')
+dbUp.set_character_set('utf8')
+cursorUp = dbUp.cursor()
+
+sql = "SELECT namerus,titlecopy,id FROM site WHERE (titlecopy = '' and namerus like '"+param+"%') Limit 100"
+cursor.execute(sql)
+data =  cursor.fetchall()
+g     = Grab()
+for rec in data:
+    name,title,id = rec
+    name = str(name)
+    id   = str(id)
+    # Устанавливаем титле сайта
+    # print name
+    url = "http://www."+name
+    try:
+    #if 1==1:
+        g.go(url)
+        title = "нет титле"
+        title = g.xpath_text('//title')
+        # Записываем информацию в базу данныых
+        sqlUp = "UPDATE site SET `titlecopy` = '"+title+"' WHERE (`id` = "+id+")"
+        print sqlUp	
+        cursorUp.execute(sqlUp)
+        dbUp.commit()
+    except:
+    #if 2==1:
+        print " "
+        sqlUp = "UPDATE site SET `titlecopy` = 'сайт не найден' WHERE (`id` = "+id+")"
+        print sqlUp 
+        cursorUp.execute(sqlUp)
+        dbUp.commit()
+
+
+
+
+
+
+
+
