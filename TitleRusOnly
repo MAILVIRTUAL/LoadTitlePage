@@ -11,11 +11,11 @@ for param in sys.argv:
 
 from grab import Grab
 from lxml.html import tostring
-db = MySQLdb.connect(host="localhost", user="izofen", passwd="podkjf4", db="rusnet",charset='cp1251')
+db = MySQLdb.connect(host="localhost", user="izofen", passwd="-------", db="rusnet",charset='cp1251')
 db.set_character_set('utf8')
 cursor = db.cursor()
 
-dbUp = MySQLdb.connect(host="localhost", user="izofen", passwd="podkjf4", db="rusnet",charset='cp1251')
+dbUp = MySQLdb.connect(host="localhost", user="izofen", passwd="--------", db="rusnet",charset='cp1251')
 dbUp.set_character_set('utf8')
 cursorUp = dbUp.cursor()
 
